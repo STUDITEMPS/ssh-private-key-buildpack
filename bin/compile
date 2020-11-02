@@ -22,7 +22,7 @@ if [ "$kundenportal_frontend_ssh_private_key" != "" ] && [ "$kundenverwaltung_au
 	ln -s "$1/.ssh" "$HOME/.ssh"
 	echo "$kundenportal_frontend_ssh_private_key" | base64 --decode > "$HOME/.ssh/kundenportal_frontend"
 	echo "$kundenverwaltung_auth_client_ssh_private_key" | base64 --decode > "$HOME/.ssh/kundenverwaltung_auth_client"
-
+	echo "$HOME/.ssh/config"
 	IFS=',' read -ra HOST <<< "$ssh_hosts"
 	for i in "${HOST[@]}"; do
 		ssh -oStrictHostKeyChecking=no -T $i 2>&1 | indent
