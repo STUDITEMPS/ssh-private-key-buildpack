@@ -9,17 +9,19 @@ function indent() {
 }
 
 ENV_DIR=${3:-}
-ssh_key="$(cat $ENV_DIR/SSH_KEY)"
+kundenportal_frontend_ssh_private_key="$(cat $ENV_DIR/KUNDENPORTAL_FRONTEND_SSH_PRIVATE_KEY)"
+kundenverwaltung_auth_client_ssh_private_key="$(cat $ENV_DIR/KUNDENVERWALTUNG_AUTH_CLIENT_SSH_PRIVATE_KEY)"
 ssh_hosts=${SSH_HOSTS:-"git@github.com"}
 
-if [ "$ssh_key" != "" ]; then
+if [ "$kundenportal_frontend_ssh_private_key" != "" ] && [ "$kundenverwaltung_auth_client_ssh_private_key" != "" ]; then
 	echo "-----> Running SSH private key setup"
 
 	# The .ssh needs to be located in the home directory which is different to the
 	# home directory of the built machine. The symlink resolves the issue.
 	mkdir "$1/.ssh"
 	ln -s "$1/.ssh" "$HOME/.ssh"
-	echo "$ssh_key" | base64 --decode > "$HOME/.ssh/id_rsa"
+	echo "$kundenportal_frontend_ssh_private_key" | base64 --decode > "$HOME/.ssh/kundenportal_frontend"
+	echo "$kundenverwaltung_auth_client_ssh_private_key" | base64 --decode > "$HOME/.ssh/kundenverwaltung_auth_client"
 
 	IFS=',' read -ra HOST <<< "$ssh_hosts"
 	for i in "${HOST[@]}"; do
