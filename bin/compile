@@ -11,7 +11,7 @@ function indent() {
 ENV_DIR=${3:-}
 kundenportal_frontend_ssh_private_key="$(cat $ENV_DIR/KUNDENPORTAL_FRONTEND_SSH_PRIVATE_KEY)"
 kundenverwaltung_auth_client_ssh_private_key="$(cat $ENV_DIR/KUNDENVERWALTUNG_AUTH_CLIENT_SSH_PRIVATE_KEY)"
-ssh_hosts=${SSH_HOSTS:-"git@github.com"}
+ssh_hosts=${SSH_HOSTS:-"git@github.com,git@kundenportal_frontend,git@kundenverwaltung_auth_client"}
 
 if [ "$kundenportal_frontend_ssh_private_key" != "" ] && [ "$kundenverwaltung_auth_client_ssh_private_key" != "" ]; then
 	echo "-----> Running SSH private key setup"
@@ -30,5 +30,5 @@ if [ "$kundenportal_frontend_ssh_private_key" != "" ] && [ "$kundenverwaltung_au
 
 	exit 0
 else
-	echo "-----> No SSH private key"
+	echo "-----> Not all SSH private keys were provided"
 fi
