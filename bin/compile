@@ -1,9 +1,16 @@
 #!/usr/bin/env bash
 
+function indent() {
+	c='s/^/       /'
+	case $(uname) in
+		Darwin) sed -l "$c";;
+		*)      sed -u "$c";;
+	esac
+}
+
 ENV_DIR=${3:-}
 kundenportal_frontend_ssh_private_key="$(cat $ENV_DIR/KUNDENPORTAL_FRONTEND_SSH_PRIVATE_KEY)"
 kundenverwaltung_auth_client_ssh_private_key="$(cat $ENV_DIR/KUNDENVERWALTUNG_AUTH_CLIENT_SSH_PRIVATE_KEY)"
-private_repositories=("kundenportal_frontend" "kundenverwaltung_auth_client")
 
 if [ "$kundenportal_frontend_ssh_private_key" != "" ] && [ "$kundenverwaltung_auth_client_ssh_private_key" != "" ]; then
 	echo "-----> Running SSH private key setup"
@@ -19,24 +26,24 @@ if [ "$kundenportal_frontend_ssh_private_key" != "" ] && [ "$kundenverwaltung_au
 	chmod 0600 "$HOME/.ssh/kundenportal_frontend"
 	chmod 0600 "$HOME/.ssh/kundenverwaltung_auth_client"
 
-	for repo in ${private_repositories[@]}; do
-    echo "
-      Host ${repo}.github.com
-		    Hostname github.com
-	      StrictHostKeyChecking no
-		    User git
-		    IdentityFile ~/.ssh/${repo}
-		    IdentitiesOnly yes
-	  " >> "$HOME/.ssh/config"
+	echo "
+	Host ssh.kundenportal_frontend.github.com
+		StrictHostKeyChecking no
+		Hostname github.com
+	  User git
+	  IdentityFile ~/.ssh/kundenportal_frontend
+	  IdentitiesOnly yes
 
-	  git config --global url."git@${repo}.github.com:STUDITEMPS/${repo}".insteadOf "git@github.com:STUDITEMPS/${repo}"
+	Host ssh.kundenverwaltung_auth_client.github.com
+		StrictHostKeyChecking no
+	  Hostname github.com
+	  User git
+	  IdentityFile ~/.ssh/kundenverwaltung_auth_client
+	  IdentitiesOnly yes
+	" > "$HOME/.ssh/config"
 
-	  if git ls-remote "git@github.com:STUDITEMPS/${repo}.git" 2> /dev/null; then
-	    echo "Setup for git@github.com:STUDITEMPS/${repo} successful."
-	  else
-	    echo "Failed to access git@github.com:STUDITEMPS/${repo}"
-	  fi
-	done
+	git config url."git@ssh.kundenportal_frontend.github.com:STUDITEMPS/kundenportal_frontend.git".insteadOf "git@github.com:STUDITEMPS/kundenportal_frontend.git"
+	git config url."git@ssh.kundenverwaltung_auth_client.github.com:STUDITEMPS/kundenverwaltung_auth_client.git".insteadOf "git@github.com:STUDITEMPS/kundenverwaltung_auth_client.git"
 else
 	echo "-----> Not all SSH private keys were provided"
 fi
