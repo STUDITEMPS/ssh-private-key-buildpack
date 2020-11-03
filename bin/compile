@@ -28,24 +28,36 @@ if [ "$kundenportal_frontend_ssh_private_key" != "" ] && [ "$kundenverwaltung_au
 	chmod 0600 "$HOME/.ssh/kundenverwaltung_auth_client"
 
 	echo "
-	Host kundenportal_frontend.github.com
+	Host ssh.kundenportal_frontend.github.com
 	  Hostname github.com
 	  User git
 	  IdentityFile ~/.ssh/kundenportal_frontend
 	  IdentitiesOnly yes
 
-	Host kundenverwaltung_auth_client.github.com
+	Host http.kundenportal_frontend.github.com
+	  Hostname github.com
+	  User git
+	  IdentityFile ~/.ssh/kundenportal_frontend
+	  IdentitiesOnly yes
+
+	Host ssh.kundenverwaltung_auth_client.github.com
+	  Hostname github.com
+	  User git
+	  IdentityFile ~/.ssh/kundenverwaltung_auth_client
+	  IdentitiesOnly yes
+
+	Host http.kundenverwaltung_auth_client.github.com
 	  Hostname github.com
 	  User git
 	  IdentityFile ~/.ssh/kundenverwaltung_auth_client
 	  IdentitiesOnly yes
 	" > "$HOME/.ssh/config"
 
-	git config url."git@kundenportal_frontend.github.com:STUDITEMPS/kundenportal_frontend.git".insteadOf "git@github.com:STUDITEMPS/kundenportal_frontend.git"
-	git config url."git@kundenportal_frontend.github.com:STUDITEMPS/kundenportal_frontend.git".insteadOf "https://github.com/STUDITEMPS/kundenportal_frontend.git"
+	git config url."git@ssh.kundenportal_frontend.github.com:STUDITEMPS/kundenportal_frontend.git".insteadOf "git@github.com:STUDITEMPS/kundenportal_frontend.git"
+	git config url."git@http.kundenportal_frontend.github.com:STUDITEMPS/kundenportal_frontend.git".insteadOf "https://github.com/STUDITEMPS/kundenportal_frontend.git"
 
-	git config url."git@kundenverwaltung_auth_client.github.com:STUDITEMPS/kundenverwaltung_auth_client.git".insteadOf "git@github.com:STUDITEMPS/kundenverwaltung_auth_client.git"
-	git config url."git@kundenverwaltung_auth_client.github.com:STUDITEMPS/kundenverwaltung_auth_client.git".insteadOf "https://github.com/STUDITEMPS/kundenverwaltung_auth_client.git"
+	git config url."git@ssh.kundenverwaltung_auth_client.github.com:STUDITEMPS/kundenverwaltung_auth_client.git".insteadOf "git@github.com:STUDITEMPS/kundenverwaltung_auth_client.git"
+	git config url."git@http.kundenverwaltung_auth_client.github.com:STUDITEMPS/kundenverwaltung_auth_client.git".insteadOf "https://github.com/STUDITEMPS/kundenverwaltung_auth_client.git"
 
 	IFS=',' read -ra HOST <<< "$ssh_hosts"
 	for i in "${HOST[@]}"; do
