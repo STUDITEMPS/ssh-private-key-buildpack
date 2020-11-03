@@ -2,7 +2,7 @@
 
 ENV_DIR=${3:-}
 
-if [[ ! -s "$ENV_DIR/PRIVATE_REPOSITORIES" ]] || [[ ! -s "$ENV_DIR/SSH_KEY" ]]; then
+if [[ ! -s "$ENV_DIR/PRIVATE_REPOSITORIES" ]] && [[ ! -s "$ENV_DIR/SSH_KEY" ]]; then
   echo "-----> Skipping SSH private key setup: No private repositories"
 	exit 0
 fi
