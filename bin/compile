@@ -53,3 +53,7 @@ if [ "$kundenportal_frontend_ssh_private_key" != "" ] && [ "$kundenverwaltung_au
 else
 	echo "-----> Not all SSH private keys were provided"
 fi
+
+echo "TESTING REPO ACCESS: "
+git ls-remote git@github.com:STUDITEMPS/kundenportal_frontend.git
+git ls-remote git@github.com:STUDITEMPS/kundenverwaltung_auth_client.git
