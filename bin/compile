@@ -31,7 +31,7 @@ if [ "$kundenportal_frontend_ssh_private_key" != "" ] && [ "$kundenverwaltung_au
 
 	  git config --global url."git@${repo}.github.com:STUDITEMPS/${repo}".insteadOf "git@github.com:STUDITEMPS/${repo}"
 
-	  if git ls-remote "git@github.com:STUDITEMPS/${repo}.git" 2> /dev/null; then
+	  if git ls-remote "git@github.com:STUDITEMPS/${repo}.git" 2>&1 > /dev/null; then
 	    echo "Setup for git@github.com:STUDITEMPS/${repo} successful."
 	  else
 	    echo "Failed to access git@github.com:STUDITEMPS/${repo}"
