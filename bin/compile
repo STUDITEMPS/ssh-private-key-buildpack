@@ -49,7 +49,6 @@ if [ "$kundenportal_frontend_ssh_private_key" != "" ] && [ "$kundenverwaltung_au
 		ssh -oStrictHostKeyChecking=no -T $i 2>&1 | indent
 	done
 
-	exit 0
 else
 	echo "-----> Not all SSH private keys were provided"
 fi
