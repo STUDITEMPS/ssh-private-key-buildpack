@@ -27,40 +27,23 @@ if [ "$kundenportal_frontend_ssh_private_key" != "" ] && [ "$kundenverwaltung_au
 	chmod 0600 "$HOME/.ssh/kundenverwaltung_auth_client"
 
 	echo "
-	Host ssh.kundenportal_frontend.github.com
+	Host kundenportal_frontend.github.com
 		StrictHostKeyChecking no
 		Hostname github.com
 	  User git
 	  IdentityFile ~/.ssh/kundenportal_frontend
 	  IdentitiesOnly yes
 
-	Host http.kundenportal_frontend.github.com
+	Host kundenverwaltung_auth_client.github.com
 		StrictHostKeyChecking no
 	  Hostname github.com
-	  User git
-	  IdentityFile ~/.ssh/kundenportal_frontend
-	  IdentitiesOnly yes
-
-	Host ssh.kundenverwaltung_auth_client.github.com
-		StrictHostKeyChecking no
-	  Hostname github.com
-	  User git
-	  IdentityFile ~/.ssh/kundenverwaltung_auth_client
-	  IdentitiesOnly yes
-
-	Host http.kundenverwaltung_auth_client.github.com
-		StrictHostKeyChecking no
-		Hostname github.com
 	  User git
 	  IdentityFile ~/.ssh/kundenverwaltung_auth_client
 	  IdentitiesOnly yes
 	" > "$HOME/.ssh/config"
 
-	git config url."git@ssh.kundenportal_frontend.github.com:STUDITEMPS/kundenportal_frontend.git".insteadOf "git@github.com:STUDITEMPS/kundenportal_frontend.git"
-	git config url."git@http.kundenportal_frontend.github.com:STUDITEMPS/kundenportal_frontend.git".insteadOf "https://github.com/STUDITEMPS/kundenportal_frontend.git"
-
-	git config url."git@ssh.kundenverwaltung_auth_client.github.com:STUDITEMPS/kundenverwaltung_auth_client.git".insteadOf "git@github.com:STUDITEMPS/kundenverwaltung_auth_client.git"
-	git config url."git@http.kundenverwaltung_auth_client.github.com:STUDITEMPS/kundenverwaltung_auth_client.git".insteadOf "https://github.com/STUDITEMPS/kundenverwaltung_auth_client.git"
+	git config url."git://kundenportal_frontend.github.com:STUDITEMPS/kundenportal_frontend.git".insteadOf "git://github.com:STUDITEMPS/kundenportal_frontend.git"
+	git config url."git://kundenverwaltung_auth_client.github.com:STUDITEMPS/kundenverwaltung_auth_client.git".insteadOf "git://github.com:STUDITEMPS/kundenverwaltung_auth_client.git"
 else
 	echo "-----> Not all SSH private keys were provided"
 fi
@@ -69,10 +52,5 @@ echo "TESTING REPO ACCESS: "
 git ls-remote git@github.com:STUDITEMPS/kundenportal_frontend.git
 git ls-remote git@github.com:STUDITEMPS/kundenverwaltung_auth_client.git
 
-# git clone git@github.com:STUDITEMPS/kundenportal_frontend.git
-git clone https://github.com/STUDITEMPS/kundenportal_frontend.git
-# git clone git@ssh.kundenportal_frontend.github.com:STUDITEMPS/kundenportal_frontend.git
-
-# git clone git@github.com:STUDITEMPS/kundenverwaltung_auth_client.git
-git clone https://github.com/STUDITEMPS/kundenverwaltung_auth_client.git
-# git clone git@ssh.kundenverwaltung_auth_client.github.com:STUDITEMPS/kundenverwaltung_auth_client.git
+git clone git@github.com:STUDITEMPS/kundenportal_frontend.git
+git clone git@github.com:STUDITEMPS/kundenverwaltung_auth_client.git
