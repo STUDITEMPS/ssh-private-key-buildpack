@@ -19,7 +19,7 @@ if [ "$kundenportal_frontend_ssh_private_key" != "" ] && [ "$kundenverwaltung_au
 	chmod 0600 "$HOME/.ssh/kundenportal_frontend"
 	chmod 0600 "$HOME/.ssh/kundenverwaltung_auth_client"
 
-	for repo in $private_repositories; do
+	for repo in ${private_repositories[@]}; do
     echo "
       Host ${repo}.github.com
 		    Hostname github.com
