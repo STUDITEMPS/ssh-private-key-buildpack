@@ -8,7 +8,7 @@ if [[ ! -f "$ENV_DIR/PRIVATE_REPOSITORIES" ]] || [[ ! -s "$ENV_DIR/PRIVATE_REPOS
 fi
 
 IFS=',' private_repositories=($(cat $ENV_DIR/PRIVATE_REPOSITORIES))
-echo "-----> Running SSH private key setup"
+echo "-----> Running SSH private key setup for ${#private_repositories[@]} repositories."
 
 # The .ssh needs to be located in the home directory which is different to the
 # home directory of the built machine. The symlink resolves the issue.
