@@ -69,10 +69,10 @@ echo "TESTING REPO ACCESS: "
 git ls-remote git@github.com:STUDITEMPS/kundenportal_frontend.git
 git ls-remote git@github.com:STUDITEMPS/kundenverwaltung_auth_client.git
 
-git clone git@github.com:STUDITEMPS/kundenportal_frontend.git
+# git clone git@github.com:STUDITEMPS/kundenportal_frontend.git
 git clone https://github.com/STUDITEMPS/kundenportal_frontend.git
-git clone git@ssh.kundenportal_frontend.github.com:STUDITEMPS/kundenportal_frontend.git
+# git clone git@ssh.kundenportal_frontend.github.com:STUDITEMPS/kundenportal_frontend.git
 
-git clone git@github.com:STUDITEMPS/kundenverwaltung_auth_client.git
+# git clone git@github.com:STUDITEMPS/kundenverwaltung_auth_client.git
 git clone https://github.com/STUDITEMPS/kundenverwaltung_auth_client.git
-git clone git@ssh.kundenverwaltung_auth_client.github.com:STUDITEMPS/kundenverwaltung_auth_client.git
+# git clone git@ssh.kundenverwaltung_auth_client.github.com:STUDITEMPS/kundenverwaltung_auth_client.git
