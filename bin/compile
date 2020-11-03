@@ -42,8 +42,11 @@ if [ "$kundenportal_frontend_ssh_private_key" != "" ] && [ "$kundenverwaltung_au
 	  IdentitiesOnly yes
 	" > "$HOME/.ssh/config"
 
-	git config url."ssh://git@kundenportal_frontend.github.com/STUDITEMPS/kundenportal_frontend.git".insteadOf "ssh://git@github.com:STUDITEMPS/kundenportal_frontend.git"
-	git config url."ssh://git@kundenverwaltung_auth_client.github.com/STUDITEMPS/kundenverwaltung_auth_client.git".insteadOf "ssh://git@github.com:STUDITEMPS/kundenverwaltung_auth_client.git"
+	# git config url."ssh://git@kundenportal_frontend.github.com/STUDITEMPS/kundenportal_frontend.git".insteadOf "ssh://git@github.com:STUDITEMPS/kundenportal_frontend.git"
+	# git config url."ssh://git@kundenverwaltung_auth_client.github.com/STUDITEMPS/kundenverwaltung_auth_client.git".insteadOf "ssh://git@github.com:STUDITEMPS/kundenverwaltung_auth_client.git"
+
+	git config url."git@ssh.kundenportal_frontend.github.com:STUDITEMPS/kundenportal_frontend.git".insteadOf "git@github.com:STUDITEMPS/kundenportal_frontend.git"
+	git config url."git@ssh.kundenverwaltung_auth_client.github.com:STUDITEMPS/kundenverwaltung_auth_client.git".insteadOf "git@github.com:STUDITEMPS/kundenverwaltung_auth_client.git"
 else
 	echo "-----> Not all SSH private keys were provided"
 fi
@@ -55,3 +58,6 @@ git ls-remote git@github.com:STUDITEMPS/kundenverwaltung_auth_client.git
 echo "TESTING REPO ACCESS WITH CLONE: "
 git clone git@github.com:STUDITEMPS/kundenportal_frontend.git
 git clone git@github.com:STUDITEMPS/kundenverwaltung_auth_client.git
+
+git clone git@ssh.kundenportal_frontend.github.com:STUDITEMPS/kundenportal_frontend.git
+git clone git@ssh.kundenverwaltung_auth_client.github.com:STUDITEMPS/kundenverwaltung_auth_client.git
