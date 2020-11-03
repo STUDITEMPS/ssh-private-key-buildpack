@@ -1,38 +1,46 @@
 #!/usr/bin/env bash
 
 ENV_DIR=${3:-}
-kundenportal_frontend_ssh_private_key="$(cat $ENV_DIR/KUNDENPORTAL_FRONTEND_SSH_PRIVATE_KEY)"
-kundenverwaltung_auth_client_ssh_private_key="$(cat $ENV_DIR/KUNDENVERWALTUNG_AUTH_CLIENT_SSH_PRIVATE_KEY)"
-private_repositories=("kundenportal_frontend" "kundenverwaltung_auth_client")
 
-if [ "$kundenportal_frontend_ssh_private_key" != "" ] && [ "$kundenverwaltung_auth_client_ssh_private_key" != "" ]; then
-	echo "-----> Running SSH private key setup"
-
-	# The .ssh needs to be located in the home directory which is different to the
-	# home directory of the built machine. The symlink resolves the issue.
-	mkdir "$1/.ssh"
-	ln -s "$1/.ssh" "$HOME/.ssh"
-	echo "$kundenportal_frontend_ssh_private_key" | base64 --decode > "$HOME/.ssh/kundenportal_frontend"
-	echo "$kundenverwaltung_auth_client_ssh_private_key" | base64 --decode > "$HOME/.ssh/kundenverwaltung_auth_client"
-
-	for repo in ${private_repositories[@]}; do
-    echo "
-      Host ${repo}.github.com
-		    Hostname github.com
-	      StrictHostKeyChecking no
-		    User git
-		    IdentityFile ~/.ssh/${repo}
-		    IdentitiesOnly yes
-	  " >> "$HOME/.ssh/config"
-
-	  git config --global url."git@${repo}.github.com:STUDITEMPS/${repo}".insteadOf "git@github.com:STUDITEMPS/${repo}"
-
-	  if git ls-remote "git@github.com:STUDITEMPS/${repo}.git" 2>&1 > /dev/null; then
-	    echo "Setup for git@github.com:STUDITEMPS/${repo} successful."
-	  else
-	    echo "Failed to access git@github.com:STUDITEMPS/${repo}"
-	  fi
-	done
-else
-	echo "-----> Not all SSH private keys were provided"
+if [[ ! -f "$ENV_DIR/PRIVATE_REPOSITORIES" ]] || [[ ! -s "$ENV_DIR/PRIVATE_REPOSITORIES" ]]; then
+  echo "-----> Skipping SSH private key setup: No private repositories"
+	exit 0
 fi
+
+IFS=',' private_repositories=($(cat $ENV_DIR/PRIVATE_REPOSITORIES))
+echo "-----> Running SSH private key setup"
+
+# The .ssh needs to be located in the home directory which is different to the
+# home directory of the built machine. The symlink resolves the issue.
+mkdir "$1/.ssh"
+ln -s "$1/.ssh" "$HOME/.ssh"
+
+github_org=${GITHUB_ORGANIZATION:-"STUDITEMPS"}
+
+for repo in ${private_repositories[@]}; do
+  ssh_key="$([ -f $ENV_DIR/${repo^^}_SSH_PRIVATE_KEY ] && cat $ENV_DIR/${repo^^}_SSH_PRIVATE_KEY)"
+	if [ "${ssh_key}" = "" ]; then
+	  echo "MISSING KEY: Expected \`${repo^^}_SSH_PRIVATE_KEY\` to provide ssh private key"
+		exit 1
+	fi
+
+	echo "${ssh_key}" | base64 --decode > "$HOME/.ssh/${repo}"
+	pseudo_host="${repo}.${github_org}.github.com"
+	echo "
+		Host ${pseudo_host}
+			Hostname github.com
+			StrictHostKeyChecking no
+			User git
+			IdentityFile ~/.ssh/${repo}
+			IdentitiesOnly yes
+	" >> "$HOME/.ssh/config"
+
+	git config --global url."git@${pseudo_host}:${github_org}/${repo}".insteadOf "git@github.com:${github_org}/${repo}"
+
+	if git ls-remote "git@github.com:${github_org}/${repo}" 2>&1 > /dev/null; then
+		echo "SSH-Setup for git@github.com:${github_org}/${repo} was successful."
+	else
+		echo "Failed to access git@github.com:${github_org}/${repo}"
+		exit 1
+	fi
+done
