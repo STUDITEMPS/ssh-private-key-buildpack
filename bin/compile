@@ -37,6 +37,9 @@ if [ "$kundenportal_frontend_ssh_private_key" != "" ] && [ "$kundenverwaltung_au
 	  IdentitiesOnly yes
 	" > "$HOME/.ssh/config"
 
+	git config url."git@kundenportal_frontend.github.com:STUDITEMPS/kundenportal_frontend.git".insteadOf "git@github.com:STUDITEMPS/kundenportal_frontend.git"
+	git config url."git@kundenverwaltung_auth_client.com:STUDITEMPS/kundenverwaltung_auth_client.git".insteadOf "git@github.com:STUDITEMPS/kundenverwaltung_auth_client.git"
+
 	IFS=',' read -ra HOST <<< "$ssh_hosts"
 	for i in "${HOST[@]}"; do
 		ssh -oStrictHostKeyChecking=no -T $i 2>&1 | indent
