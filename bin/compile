@@ -27,14 +27,14 @@ if [ "$kundenportal_frontend_ssh_private_key" != "" ] && [ "$kundenverwaltung_au
 	chmod 0600 "$HOME/.ssh/kundenverwaltung_auth_client"
 
 	echo "
-	Host kundenportal_frontend.github.com
+	Host ssh.kundenportal_frontend.github.com
 		StrictHostKeyChecking no
 		Hostname github.com
 	  User git
 	  IdentityFile ~/.ssh/kundenportal_frontend
 	  IdentitiesOnly yes
 
-	Host kundenverwaltung_auth_client.github.com
+	Host ssh.kundenverwaltung_auth_client.github.com
 		StrictHostKeyChecking no
 	  Hostname github.com
 	  User git
@@ -56,8 +56,8 @@ git ls-remote git@github.com:STUDITEMPS/kundenportal_frontend.git
 git ls-remote git@github.com:STUDITEMPS/kundenverwaltung_auth_client.git
 
 echo "TESTING REPO ACCESS WITH CLONE: "
-git clone git@github.com:STUDITEMPS/kundenportal_frontend.git
-git clone git@github.com:STUDITEMPS/kundenverwaltung_auth_client.git
+# git clone git@github.com:STUDITEMPS/kundenportal_frontend.git
+# git clone git@github.com:STUDITEMPS/kundenverwaltung_auth_client.git
 
 git clone git@ssh.kundenportal_frontend.github.com:STUDITEMPS/kundenportal_frontend.git
 git clone git@ssh.kundenverwaltung_auth_client.github.com:STUDITEMPS/kundenverwaltung_auth_client.git
