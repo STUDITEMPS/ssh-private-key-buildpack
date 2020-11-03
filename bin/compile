@@ -24,13 +24,13 @@ if [ "$kundenportal_frontend_ssh_private_key" != "" ] && [ "$kundenverwaltung_au
 	echo "$kundenverwaltung_auth_client_ssh_private_key" | base64 --decode > "$HOME/.ssh/kundenverwaltung_auth_client"
 
 	echo "
-	Host kundenportal_frontend
+	Host kundenportal_frontend.github.com
 	  Hostname github.com
 	  User git
 	  IdentityFile ~/.ssh/kundenportal_frontend
 	  IdentitiesOnly yes
 
-	Host kundenverwaltung_auth_client
+	Host kundenverwaltung_auth_client.github.com
 	  Hostname github.com
 	  User git
 	  IdentityFile ~/.ssh/kundenverwaltung_auth_client
