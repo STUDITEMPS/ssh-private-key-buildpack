@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-function test_access() {
-}
-
 ENV_DIR=${3:-}
 kundenportal_frontend_ssh_private_key="$(cat $ENV_DIR/KUNDENPORTAL_FRONTEND_SSH_PRIVATE_KEY)"
 kundenverwaltung_auth_client_ssh_private_key="$(cat $ENV_DIR/KUNDENVERWALTUNG_AUTH_CLIENT_SSH_PRIVATE_KEY)"
@@ -23,17 +20,17 @@ if [ "$kundenportal_frontend_ssh_private_key" != "" ] && [ "$kundenverwaltung_au
 	chmod 0600 "$HOME/.ssh/kundenverwaltung_auth_client"
 
 	for repo in $private_repositories; do
-          echo "
-          Host ${repo}.github.com
-	    Hostname github.com
-            StrictHostKeyChecking no
-	    User git
-	    IdentityFile ~/.ssh/${repo}
-	    IdentitiesOnly yes
+    echo "
+      Host ${repo}.github.com
+		    Hostname github.com
+	      StrictHostKeyChecking no
+		    User git
+		    IdentityFile ~/.ssh/${repo}
+		    IdentitiesOnly yes
 	  " >> "$HOME/.ssh/config"
 
 	  git config --global url."git@${repo}.github.com:STUDITEMPS/${repo}".insteadOf "git@github.com:STUDITEMPS/${repo}"
-	
+
 	  if git ls-remote "git@github.com:STUDITEMPS/${repo}.git" 2> /dev/null; then
 	    echo "Setup for git@github.com:STUDITEMPS/${repo} successful."
 	  else
